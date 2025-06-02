@@ -11,12 +11,9 @@ class SalesController {
     }
 
     // Registrar uma nova venda
-    public function createSale($productId, $saleDate = null) {
-        if (!$saleDate) {
-            $saleDate = date('Y-m-d H:i:s');
-        }
+    public function createSale($productId) {
 
-        $sale = new SalesModel($productId, $saleDate);
+        $sale = new SalesModel($productId);
 
         return $this->dao->insert($sale);
     }

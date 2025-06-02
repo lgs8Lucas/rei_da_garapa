@@ -2,12 +2,10 @@
 class SalesModel {
     private $id;
     private $productId;
-    private $quantity;
     private $saleDate;
 
-    public function __construct($productId, $saleDate) {
+    public function __construct($productId) {
         $this->productId = $productId;
-        $this->saleDate = $saleDate;
     }
 
     public function getId() { 

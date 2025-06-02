@@ -56,9 +56,10 @@ foreach (array_keys($productSalesCount) as $productId) {
 
 <table>
     <tr>
-        <th>ID da Venda</th>
-        <th>ID do Produto</th>
-        <th>Data da Venda</th>
+        <th>Venda</th>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        
     </tr>
     <?php 
     $cont = 0;
