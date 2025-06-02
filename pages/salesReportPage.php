@@ -47,6 +47,11 @@ foreach (array_keys($productSalesCount) as $productId) {
 <body>
 <?php $mainView->showNavbar('salesReport'); ?>
 
+<h2>Gráfico de Vendas por Produto</h2>
+<div id="chartContainer">
+    <canvas id="salesChart"></canvas>
+</div>
+
 <h2>Extrato de Vendas</h2>
 
 <table>
@@ -66,11 +71,6 @@ foreach (array_keys($productSalesCount) as $productId) {
     </tr>
     <?php endforeach; ?>
 </table>
-
-<h2>Gráfico de Vendas por Produto</h2>
-<div id="chartContainer">
-    <canvas id="salesChart"></canvas>
-</div>
 
 <script>
     const ctx = document.getElementById('salesChart').getContext('2d');

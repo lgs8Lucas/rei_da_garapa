@@ -21,7 +21,7 @@ $productsList = $productDAO->getAll();
     
     <div class="row justify-content-center">
       <?php foreach ($productsList as $product): ?>
-        <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="col-12 col-md-6 col-lg-4 mb-4" style="width: 400px; height: 500px;">
           <div class="card h-100">
             <?php
               $img = $product->getImage();

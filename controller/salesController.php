@@ -13,7 +13,7 @@ class SalesController {
     // Registrar uma nova venda
     public function createSale($productId, $saleDate = null) {
         if (!$saleDate) {
-            $saleDate = date('Y-m-d H:i:s'); 
+            $saleDate = date('Y-m-d H:i:s');
         }
 
         $sale = new SalesModel($productId, $saleDate);
