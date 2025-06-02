@@ -7,17 +7,17 @@ class SalesDAO {
         $this->pdo = $pdo;
     }
 
-    // INSERIR venda usando SaleModel
-    public function insert(SaleModel $sale) {
+
+    public function insert(SalesModel $sale) {
         $sql = "INSERT INTO Sales (Product_ID, Sale_Time) VALUES (?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $sale->getProductId(),
-            $sale->getTime()
+            $sale->getSaleDate()
         ]);
     }
 
-    // BUSCAR todas as vendas e retornar lista de SaleModel
+
     public function getAll() {
         $sql = "SELECT * FROM Sales";
         $stmt = $this->pdo->query($sql);
@@ -25,12 +25,16 @@ class SalesDAO {
 
         $sales = [];
         foreach ($rows as $row) {
-            $sales[] = new SaleModel(
+            $sales[] = new SalesModel(
+                $row['ID'],           
                 $row['Product_ID'],
+                1,                    
                 $row['Sale_Time']
             );
         }
 
         return $sales;
     }
+
+
 }

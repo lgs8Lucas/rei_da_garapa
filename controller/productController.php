@@ -1,103 +1,107 @@
 <?php
 require_once './../models/productsModel.php';
-require_once 'models/productDAO.php'; 
-require_once 'connection.php'; 
+require_once './../dao/productDAO.php';
+require_once './../database/connection.php';
+require_once './../view/mainView.php';
 
-class ProductController{
 
+class ProductController
+{
+
+    private $mainView;
     private $dao;
+    private $view;
 
-    public function __construct($connection)
-    {   
-        $this->dao = new ProductDAO($connection);
+    public function __construct($view, $dao)
+    {
+        $this->dao = $dao;
+        $this->mainView = new MainView();
+        $this->view = $view;
     }
 
-     // Inserir usando o product Model
-    public function insert($product) {
-         if(
-            isset($_POST['name'], $_POST['quantity'], $_POST['price'], $_FILES['image'], $_POST['description']) &&
-            !empty($_POST['name']) && 
-            !empty($_POST['quantity']) && 
-            !empty($_POST['price']) &&
-            !empty($_POST['description']))
-            {
-
-                $name = addslashes($_POST['name']);
-                $quantity = addslashes($_POST['quantity']);
-                $price = addslashes($_POST['price']);
-                $description = addslashes($_POST['description']);
-
-                $tree = "img/";
-                
-                $extensao = strtolower(substr($_FILES['image']['name'], -4));
-                $new_name = md5(time()) . $extensao;
-
-                if(move_uploaded_file($_FILES['image']['tmp_name'], $tree . $new_name)){
-
-                    $imagePath = $tree . $new_name;
-
-                    $product = new ProductsModel($name, $quantity, $price, $imagePath, $description);
-
-                    return $this->dao->insert($product);
-
-                }else {
-                    return 0;
-                }
+    // Inserir usando o product Model
+    public function insert($product)
+    {
+        if ($product instanceof ProductsModel) {
+            if ($this->dao->insert($product)) {
+                $this->mainView->showAllert('Produto adicionado com sucesso!');
+                echo "<script>window.location.href = './../pages/productsPage.php';</script>";
+            } else {
+                $this->mainView->showAllert('Erro ao adicionar produto.');
             }
+        }
     }
 
 
-    public function getById($id) {
+    public function getById($id)
+    {
         return $this->dao->getById($id);
     }
 
-    public function getAll() {
-        return $this->dao->getAll();
+    public function listProducts()
+    {
+        $products = $this->dao->getAll();
+        $this->view->showProductsList($products);
     }
 
 
-     // ATUALIZAR usando ProductModel
-    public function update($id, $product) {
-         if (
-            isset($_POST['name'], $_POST['quantity'], $_POST['price'], $_FILES['image'], $_POST['description']) &&
-            !empty($_POST['name']) && 
-            !empty($_POST['quantity']) && 
-            !empty($_POST['price']) &&
-            !empty($_POST['description']))
-            {
-
-                $name = addslashes($_POST['name']);
-                $quantity = addslashes($_POST['quantity']);
-                $price = addslashes($_POST['price']);
-                $description = addslashes($_POST['description']);
-
-                $tree = "img/";
-                
-                $extensao = strtolower(substr($_FILES['image']['name'], -4));
-                $new_name = md5(time()) . $extensao;
-
-                if(move_uploaded_file($_FILES['image']['tmp_name'], $tree . $new_name)){
-
-                    $imagePath = $tree . $new_name;
-
-                    $product = new ProductsModel($name, $quantity, $price, $imagePath, $description);
-
-                    return $this->dao->update($id, $product);
-
-                }else {
-                    return 0;
-                }
+    // ATUALIZAR usando ProductModel
+    public function update($id, $product)
+    {
+        if ($product instanceof ProductsModel) {
+            if ($this->dao->update($id, $product)) {
+                $this->mainView->showAllert('Produto editado com sucesso!');
+                echo "<script>window.location.href = './../pages/productsPage.php';</script>";
+            } else {
+                $this->mainView->showAllert('Erro ao editar produto.');
             }
+        }
     }
 
     // DELETAR
-    public function delete($id) {
-       return $this->dao->delete($id);
+    public function delete($id)
+    {
+        if ($this->dao->delete($id)) {
+            $this->mainView->showAllert('Produto excluído com sucesso!');
+        } else {
+            $this->mainView->showAllert('Erro ao excluir produto.');
+        }
     }
 
+    public function decreaseQuantity($productId, $amount)
+    {
+        // Pega o produto pelo ID
+        $product = $this->dao->getById($productId);
+
+        if (!$product) {
+            $this->mainView->showAllert('Produto não encontrado!');
+            return false;
+        }
+
+        // Verifica se a quantidade é suficiente
+        $currentQuantity = $product->getQuantity();
+        if ($currentQuantity < $amount) {
+            $this->mainView->showAllert('Quantidade insuficiente em estoque!');
+            return false;
+        }
+
+        // Atualiza a quantidade
+        $newQuantity = $currentQuantity - $amount;
+        $product->setQuantity($newQuantity);
+
+        // Atualiza no banco
+        if ($this->dao->update($productId, $product)) {
+            $this->mainView->showAllert('Quantidade atualizada com sucesso!');
+            return true;
+        } else {
+            $this->mainView->showAllert('Erro ao atualizar quantidade.');
+            return false;
+        }
+    }
+
+    public function getImageById($id)
+{
+    return $this->dao->getImageById($id);
 }
 
-?>
-
-
-
+}

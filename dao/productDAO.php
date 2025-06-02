@@ -9,7 +9,7 @@ class ProductDAO {
 
     // INSERIR usando ProductModel
     public function insert(ProductsModel $product) {
-        $sql = "INSERT INTO Products (Name, Quantity, Price, Image, Description) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Products ( Name, Quantity, Price, Image, Description) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $product->getName(),

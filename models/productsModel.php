@@ -8,13 +8,16 @@ class ProductsModel {
     private $image;
     private $description;
 
-    public function __construct($name, $quantity, $price, $image, $description) {
+    public function __construct($id = null, $name, $quantity, $price, $image, $description) {
+        $this->id = $id; // ID pode ser null se for um novo produto
         $this->name= $name;
         $this->quantity = $quantity;
         $this->price= $price;
         $this->image = $image;
         $this->description = $description;
     }
+
+    
 
      public function getId() {
         return $this->id;
