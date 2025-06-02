@@ -1,8 +1,6 @@
 <?php
-require_once './dao/UserDAO.php';      
 require_once './dao/ProductDAO.php';
-require_once './models/productsModel.php';     
-require_once './dao/SalesDAO.php';    
+require_once './models/productsModel.php';
 require_once './database/connection.php';
 
 $productDAO = new ProductDAO($pdo);
@@ -25,7 +23,15 @@ $productsList = $productDAO->getAll();
       <?php foreach ($productsList as $product): ?>
         <div class="col-12 col-md-6 col-lg-4 mb-4">
           <div class="card h-100">
-            <img src="./img/" class="card-img-top" alt="<?= htmlspecialchars($product->getName()) ?>">
+            <?php
+              $img = $product->getImage();
+              $img = str_replace("./../", "", $img);
+
+              echo '<img
+                        class="card-img-top"
+                        src="' . htmlspecialchars($img) . '"
+                        alt="' . htmlspecialchars($product->getName()) . '">';
+            ?>
             <div class="card-body">
             <h5 class="card-title"><?= htmlspecialchars($product->getName()) ?></h5>
             <p class="card-text"><?= htmlspecialchars($product->getDescription()) ?></p>

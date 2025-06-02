@@ -1,4 +1,5 @@
 <?php
+require_once './../models/salesModel.php';
 
 class SalesDAO {
     private $pdo;
@@ -25,10 +26,8 @@ class SalesDAO {
 
         $sales = [];
         foreach ($rows as $row) {
-            $sales[] = new SalesModel(
-                $row['ID'],           
+            $sales[] = new SalesModel(          
                 $row['Product_ID'],
-                1,                    
                 $row['Sale_Time']
             );
         }

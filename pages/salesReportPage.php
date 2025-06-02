@@ -62,7 +62,7 @@ foreach (array_keys($productSalesCount) as $productId) {
     <tr>
         <td><?= htmlspecialchars($cont) ?></td>
         <td><?= htmlspecialchars($sale->getProductId()) ?></td>
-        <td><?= htmlspecialchars($sale->getTime()) ?></td>
+        <td><?= htmlspecialchars($sale->getSaleDate()) ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

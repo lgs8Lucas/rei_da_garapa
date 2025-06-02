@@ -70,7 +70,7 @@ class ProductController
 
     public function decreaseQuantity($productId, $amount)
     {
-        // Pega o produto pelo ID
+       
         $product = $this->dao->getById($productId);
 
         if (!$product) {
@@ -78,18 +78,18 @@ class ProductController
             return false;
         }
 
-        // Verifica se a quantidade é suficiente
+        
         $currentQuantity = $product->getQuantity();
         if ($currentQuantity < $amount) {
             $this->mainView->showAllert('Quantidade insuficiente em estoque!');
             return false;
         }
 
-        // Atualiza a quantidade
+        
         $newQuantity = $currentQuantity - $amount;
         $product->setQuantity($newQuantity);
 
-        // Atualiza no banco
+      
         if ($this->dao->update($productId, $product)) {
             $this->mainView->showAllert('Quantidade atualizada com sucesso!');
             return true;
@@ -98,10 +98,4 @@ class ProductController
             return false;
         }
     }
-
-    public function getImageById($id)
-{
-    return $this->dao->getImageById($id);
-}
-
 }

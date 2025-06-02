@@ -16,7 +16,7 @@ class SalesController {
             $saleDate = date('Y-m-d H:i:s'); 
         }
 
-        $sale = new SalesModel(null, $productId, 1, $saleDate); 
+        $sale = new SalesModel($productId, $saleDate);
 
         return $this->dao->insert($sale);
     }
@@ -25,4 +25,6 @@ class SalesController {
     public function listSales() {
         return $this->dao->getAll();
     }
+
+
 }
