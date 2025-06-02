@@ -41,11 +41,14 @@ class UserController
         if ($this->dao->insert($this->model)) {
             // Redirect
             // Save in session
-            session_start();
+            // Check if session is already started
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
             $_SESSION['user_id'] = $this->dao->getLastInsertedId(); // Assuming getLastInsertId() returns the last inserted user ID
             $_SESSION['user_name'] = $name; // Save the user's name in session
             $this->mainView->showAllert("Usuário cadastrado com sucesso!");
-            header('Location: ./../pages/salesReportPage.php');
+            echo "<script>window.location.href = './../pages/salesReportPage.php';</script>";
             exit();
         } else {
             $this->mainView->showAllert("Erro ao cadastrar usuário. Tente novamente.");
@@ -63,11 +66,13 @@ class UserController
         if ($u) {
             // Save in session
             session_start();
-            $_SESSION['user_id'] = $u['id']; // Assuming 'id' is the user ID in the database
-            $_SESSION['user_name'] = $u['name']; // Assuming 'name' is the user's name in the database
+            $_SESSION['user_id'] = $u['ID']; // Assuming 'id' is the user ID in the database
+            $_SESSION['user_name'] = $u['Name']; // Assuming 'name' is the user's name in the database
 
             $this->mainView->showAllert("Login realizado com sucesso!");
-            header('Location: ./../pages/salesReportPage.php');
+
+            echo "<script>window.location.href = './../pages/salesReportPage.php';</script>";
+            exit();
         } else {
             $this->mainView->showAllert("Email ou senha incorretos.");
         }
